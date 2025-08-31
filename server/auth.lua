@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local bcrypt = exports['fivem-bcrypt-async']
 
 -- Database setup
 CreateThread(function()
@@ -30,7 +29,6 @@ local function IsValidUsername(username)
     if not username or #username < 3 or #username > 20 then
         return false
     end
-    -- Only allow alphanumeric characters and underscores
     local pattern = "^[%w_]+$"
     return string.match(username, pattern) ~= nil
 end
@@ -75,7 +73,6 @@ RegisterNetEvent('qb-multicharacter:server:attemptLogin', function(email, passwo
         return
     end
 
-    -- Validate input
     if not email or not password or email == '' or password == '' then
         TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
             success = false,
@@ -92,7 +89,6 @@ RegisterNetEvent('qb-multicharacter:server:attemptLogin', function(email, passwo
         return
     end
 
-    -- Get user from database
     local user = GetUserByEmail(email)
     if not user then
         TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
@@ -102,44 +98,38 @@ RegisterNetEvent('qb-multicharacter:server:attemptLogin', function(email, passwo
         return
     end
 
-    -- Verify password
-    bcrypt.verify(password, user.password_hash, function(result)
-        if result then
-            -- Check if license matches
-            if user.license ~= license then
-                TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
-                    success = false,
-                    message = 'This account is linked to a different FiveM license.'
-                })
-                return
-            end
-
-            -- Update last login
-            UpdateLastLogin(user.id)
-            
-            -- Success - proceed to character selection
-            TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
-                success = true,
-                message = 'Login successful!',
-                userData = {
-                    id = user.id,
-                    username = user.username,
-                    email = user.email
-                }
-            })
-        else
+    local valid = exports['fivem-bcrypt-async']:VerifyPasswordHash(password, user.password_hash)
+    if valid then
+        if user.license ~= license then
             TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
                 success = false,
-                message = 'Invalid email or password.'
+                message = 'This account is linked to a different FiveM license.'
             })
+            return
         end
-    end)
+
+        UpdateLastLogin(user.id)
+        TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
+            success = true,
+            message = 'Login successful!',
+            userData = {
+                id = user.id,
+                username = user.username,
+                email = user.email
+            }
+        })
+    else
+        TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
+            success = false,
+            message = 'Invalid email or password.'
+        })
+    end
 end)
 
 RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, email, password)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
-    
+
     if not license then
         TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
             success = false,
@@ -148,7 +138,6 @@ RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, 
         return
     end
 
-    -- Validate input
     if not username or not email or not password or username == '' or email == '' or password == '' then
         TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
             success = false,
@@ -181,9 +170,7 @@ RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, 
         return
     end
 
-    -- Check if user already exists
-    local existingUserByEmail = GetUserByEmail(email)
-    if existingUserByEmail then
+    if GetUserByEmail(email) then
         TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
             success = false,
             message = 'An account with this email already exists.'
@@ -191,8 +178,7 @@ RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, 
         return
     end
 
-    local existingUserByUsername = GetUserByUsername(username)
-    if existingUserByUsername then
+    if GetUserByUsername(username) then
         TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
             success = false,
             message = 'This username is already taken.'
@@ -200,8 +186,7 @@ RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, 
         return
     end
 
-    local existingUserByLicense = GetUserByLicense(license)
-    if existingUserByLicense then
+    if GetUserByLicense(license) then
         TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
             success = false,
             message = 'Your FiveM license is already linked to another account.'
@@ -209,41 +194,28 @@ RegisterNetEvent('qb-multicharacter:server:attemptRegister', function(username, 
         return
     end
 
-    -- Hash password and create account
-    bcrypt.hash(password, 12, function(hash)
-        if hash then
-            local userId = CreateUserAccount(username, email, hash, license)
-            if userId then
-                TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
-                    success = true,
-                    message = 'Account created successfully! You can now sign in.'
-                })
-                
-                -- Log the registration
-                print('^2[qb-multicharacter]^7 New account registered: ' .. username .. ' (' .. email .. ')')
-            else
-                TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
-                    success = false,
-                    message = 'Failed to create account. Please try again.'
-                })
-            end
-        else
-            TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
-                success = false,
-                message = 'Failed to secure your password. Please try again.'
-            })
-        end
-    end)
+    local hash = exports['fivem-bcrypt-async']:GetPasswordHash(password)
+    local userId = CreateUserAccount(username, email, hash, license)
+    if userId then
+        TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
+            success = true,
+            message = 'Account created successfully! You can now sign in.'
+        })
+        print('^2[qb-multicharacter]^7 New account registered: ' .. username .. ' (' .. email .. ')')
+    else
+        TriggerClientEvent('qb-multicharacter:client:registerResult', src, {
+            success = false,
+            message = 'Failed to create account. Please try again.'
+        })
+    end
 end)
 
 -- Callbacks
 QBCore.Functions.CreateCallback('qb-multicharacter:server:getUserAccount', function(source, cb)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
-    
     if license then
-        local user = GetUserByLicense(license)
-        cb(user)
+        cb(GetUserByLicense(license))
     else
         cb(nil)
     end
@@ -270,7 +242,7 @@ QBCore.Commands.Add('resetuseraccount', 'Reset a user account (Admin Only)', {
     print('^3[qb-multicharacter]^7 Admin ' .. GetPlayerName(source) .. ' deactivated account: ' .. email)
 end, 'admin')
 
--- Export functions for other resources
+-- Exports
 exports('GetUserByLicense', GetUserByLicense)
 exports('GetUserByEmail', GetUserByEmail)
 exports('GetUserByUsername', GetUserByUsername)
