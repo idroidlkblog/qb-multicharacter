@@ -87,7 +87,7 @@ local Translations = {
         password_unique = "Use a unique password",
         login_success = "Login successful! Loading characters...",
         register_success = "Account created successfully! You can now sign in.",
-        invalid_credentials = "Invalid email or password.",
+        invalid_credentials = "Invalid credentials. Please check your email/username and password.",
         email_exists = "An account with this email already exists.",
         username_taken = "This username is already taken.",
         license_linked = "Your FiveM license is already linked to another account.",
@@ -97,7 +97,24 @@ local Translations = {
         passwords_no_match = "Passwords do not match.",
         username_invalid = "Username must be 3-20 characters and contain only letters, numbers, and underscores.",
         connection_error = "Connection error. Please try again.",
-        auth_required = "You must be logged in to access characters."
+        auth_required = "You must be logged in to access characters.",
+        email_or_username = "Email or Username",
+        choose_username = "Choose a username",
+        your_email = "Your email address",
+        create_password = "Create a password",
+        confirm_password_placeholder = "Confirm your password",
+        new_to_server = "New to the server?",
+        create_your_character = "Create your character",
+        join_community = "Join the Community",
+        chill_rp_experience = "Create your account for the ultimate chill RP experience",
+        already_have_account = "Already have an account?",
+        sign_in_instead = "Sign in instead",
+        processing = "Processing...",
+        verify_credentials = "Please wait while we verify your credentials",
+        account_security = "Account Security",
+        min_6_chars = "Minimum 6 characters for password",
+        username_unique = "Username must be unique (3-20 characters)",
+        one_account_per_license = "One account per FiveM license"
     }
 }
 

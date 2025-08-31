@@ -15,187 +15,256 @@
                 theme: {
                     extend: {
                         colors: {
-                            'fivem-primary': '#1a1a1a',
-                            'fivem-secondary': '#2a2a2a',
-                            'fivem-accent': '#3b82f6',
-                            'fivem-success': '#10b981',
-                            'fivem-error': '#ef4444',
-                            'fivem-warning': '#f59e0b',
+                            'fivem': {
+                                'dark': '#0f0f0f',
+                                'darker': '#0a0a0a',
+                                'surface': '#1a1a1a',
+                                'surface-light': '#2a2a2a',
+                                'primary': '#6366f1',
+                                'primary-dark': '#4f46e5',
+                                'success': '#10b981',
+                                'success-dark': '#059669',
+                                'error': '#ef4444',
+                                'error-dark': '#dc2626',
+                                'warning': '#f59e0b',
+                                'warning-dark': '#d97706',
+                                'accent': '#8b5cf6',
+                                'accent-dark': '#7c3aed',
+                            }
                         },
                         fontFamily: {
                             'fivem': ['Inter', 'system-ui', 'sans-serif'],
                         },
                         animation: {
-                            'fade-in': 'fadeIn 0.5s ease-in-out',
-                            'slide-up': 'slideUp 0.3s ease-out',
+                            'fade-in': 'fadeIn 0.6s ease-out',
+                            'slide-up': 'slideUp 0.4s ease-out',
                             'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                            'float': 'float 3s ease-in-out infinite',
+                            'gradient-shift': 'gradientShift 4s ease-in-out infinite',
+                            'bounce-subtle': 'bounceSubtle 2s ease-in-out infinite',
+                        },
+                        backdropBlur: {
+                            'xs': '2px',
                         }
                     }
                 }
             }
         </script>
     </head>
-    <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 min-h-screen flex items-center justify-center p-4">
-        <div id="login-app" class="w-full max-w-md">
+    <body class="bg-gradient-to-br from-fivem-dark via-fivem-darker to-fivem-dark min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+        <!-- Animated Background Elements -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-40 -right-40 w-80 h-80 bg-fivem-primary/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-fivem-accent/10 rounded-full blur-3xl animate-float" style="animation-delay: -1.5s;"></div>
+            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-fivem-success/5 rounded-full blur-3xl animate-pulse"></div>
+        </div>
+
+        <!-- Grid Pattern Overlay -->
+        <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0); background-size: 20px 20px;"></div>
+
+        <div id="login-app" class="w-full max-w-md relative z-10">
             <!-- Login Form -->
-            <div id="login-form" class="bg-fivem-secondary/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/50 p-8 animate-fade-in">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-r from-fivem-accent to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <span class="material-symbols-outlined text-white text-2xl">person</span>
-                    </div>
-                    <h1 class="text-2xl font-bold text-white mb-2">Welcome Back</h1>
-                    <p class="text-gray-400">Sign in to access your characters</p>
-                </div>
-
-                <form id="login-form-element" class="space-y-6">
-                    <div class="space-y-4">
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">mail</span>
-                            <input 
-                                type="email" 
-                                id="login-email" 
-                                placeholder="Email address"
-                                class="w-full pl-12 pr-4 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-accent focus:border-transparent transition-all duration-200"
-                                required
-                            />
+            <div id="login-form" class="bg-fivem-surface/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-700/30 p-8 animate-fade-in relative overflow-hidden">
+                <!-- Gradient Border Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-fivem-primary via-fivem-accent to-fivem-success opacity-20 rounded-3xl blur-sm"></div>
+                <div class="absolute inset-[1px] bg-fivem-surface/95 rounded-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-fivem-primary to-fivem-accent rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-glow relative">
+                            <div class="absolute inset-0 bg-gradient-to-br from-fivem-primary to-fivem-accent rounded-2xl animate-gradient-shift"></div>
+                            <span class="material-symbols-outlined text-white text-3xl relative z-10">person</span>
                         </div>
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">lock</span>
-                            <input 
-                                type="password" 
-                                id="login-password" 
-                                placeholder="Password"
-                                class="w-full pl-12 pr-12 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-accent focus:border-transparent transition-all duration-200"
-                                required
-                            />
-                            <button type="button" id="toggle-login-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                                <span class="material-symbols-outlined text-xl">visibility</span>
-                            </button>
-                        </div>
+                        <h1 class="text-3xl font-bold text-white mb-3 animate-slide-up">Welcome Back</h1>
+                        <p class="text-gray-400 text-lg animate-slide-up" style="animation-delay: 0.1s;">Sign in to your chill RP experience</p>
                     </div>
 
-                    <button 
-                        type="submit" 
-                        class="w-full bg-gradient-to-r from-fivem-accent to-blue-600 hover:from-blue-600 hover:to-fivem-accent text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-fivem-accent focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                        Sign In
-                    </button>
-                </form>
+                    <form id="login-form-element" class="space-y-6">
+                        <div class="space-y-5">
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-primary">alternate_email</span>
+                                <input 
+                                    type="text" 
+                                    id="login-email" 
+                                    placeholder="Email or Username"
+                                    class="w-full pl-14 pr-4 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-primary focus:border-fivem-primary transition-all duration-300 hover:border-gray-500"
+                                    required
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-primary/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-primary">lock</span>
+                                <input 
+                                    type="password" 
+                                    id="login-password" 
+                                    placeholder="Password"
+                                    class="w-full pl-14 pr-14 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-primary focus:border-fivem-primary transition-all duration-300 hover:border-gray-500"
+                                    required
+                                />
+                                <button type="button" id="toggle-login-password" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-xl">visibility</span>
+                                </button>
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-primary/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                        </div>
 
-                <div class="mt-6 text-center">
-                    <p class="text-gray-400">
-                        Don't have an account? 
-                        <button id="show-register" class="text-fivem-accent hover:text-blue-400 font-semibold transition-colors">
-                            Create one
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-fivem-primary to-fivem-accent hover:from-fivem-primary-dark hover:to-fivem-accent-dark text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-fivem-primary focus:ring-offset-2 focus:ring-offset-fivem-dark relative overflow-hidden group"
+                        >
+                            <span class="relative z-10">Sign In</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </button>
-                    </p>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent flex-1"></div>
+                            <span class="px-4 text-gray-500 text-sm">New to the server?</span>
+                            <div class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent flex-1"></div>
+                        </div>
+                        <button id="show-register" class="text-fivem-accent hover:text-fivem-accent-dark font-semibold transition-all duration-300 hover:scale-105 relative group">
+                            <span class="relative z-10">Create your character</span>
+                            <div class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-fivem-accent to-fivem-accent-dark transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Registration Form -->
-            <div id="register-form" class="bg-fivem-secondary/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-700/50 p-8 animate-fade-in hidden">
-                <div class="text-center mb-8">
-                    <div class="w-16 h-16 bg-gradient-to-r from-fivem-success to-green-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                        <span class="material-symbols-outlined text-white text-2xl">person_add</span>
-                    </div>
-                    <h1 class="text-2xl font-bold text-white mb-2">Create Account</h1>
-                    <p class="text-gray-400">Join our community today</p>
-                </div>
-
-                <form id="register-form-element" class="space-y-6">
-                    <div class="space-y-4">
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">person</span>
-                            <input 
-                                type="text" 
-                                id="register-username" 
-                                placeholder="Username"
-                                class="w-full pl-12 pr-4 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-transparent transition-all duration-200"
-                                required
-                                minlength="3"
-                                maxlength="20"
-                            />
+            <div id="register-form" class="bg-fivem-surface/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-700/30 p-8 animate-fade-in hidden relative overflow-hidden">
+                <!-- Gradient Border Effect -->
+                <div class="absolute inset-0 bg-gradient-to-r from-fivem-success via-fivem-accent to-fivem-primary opacity-20 rounded-3xl blur-sm"></div>
+                <div class="absolute inset-[1px] bg-fivem-surface/95 rounded-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="text-center mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-fivem-success to-fivem-accent rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-bounce-subtle relative">
+                            <div class="absolute inset-0 bg-gradient-to-br from-fivem-success to-fivem-accent rounded-2xl animate-gradient-shift"></div>
+                            <span class="material-symbols-outlined text-white text-3xl relative z-10">person_add</span>
                         </div>
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">mail</span>
-                            <input 
-                                type="email" 
-                                id="register-email" 
-                                placeholder="Email address"
-                                class="w-full pl-12 pr-4 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-transparent transition-all duration-200"
-                                required
-                            />
-                        </div>
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">lock</span>
-                            <input 
-                                type="password" 
-                                id="register-password" 
-                                placeholder="Password"
-                                class="w-full pl-12 pr-12 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-transparent transition-all duration-200"
-                                required
-                                minlength="6"
-                            />
-                            <button type="button" id="toggle-register-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
-                                <span class="material-symbols-outlined text-xl">visibility</span>
-                            </button>
-                        </div>
-                        <div class="relative">
-                            <span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl">lock</span>
-                            <input 
-                                type="password" 
-                                id="register-confirm-password" 
-                                placeholder="Confirm Password"
-                                class="w-full pl-12 pr-4 py-3 bg-fivem-primary/50 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-transparent transition-all duration-200"
-                                required
-                                minlength="6"
-                            />
-                        </div>
+                        <h1 class="text-3xl font-bold text-white mb-3 animate-slide-up">Join the Community</h1>
+                        <p class="text-gray-400 text-lg animate-slide-up" style="animation-delay: 0.1s;">Create your account for the ultimate chill RP experience</p>
                     </div>
 
-                    <div class="bg-fivem-primary/30 rounded-xl p-4 border border-gray-600/50">
-                        <h3 class="text-white font-semibold mb-2 flex items-center">
-                            <span class="material-symbols-outlined mr-2 text-fivem-warning">info</span>
-                            Password Requirements
-                        </h3>
-                        <ul class="text-sm text-gray-400 space-y-1">
-                            <li class="flex items-center">
-                                <span class="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>
-                                At least 6 characters long
-                            </li>
-                            <li class="flex items-center">
-                                <span class="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>
-                                Use a unique password
-                            </li>
-                        </ul>
-                    </div>
+                    <form id="register-form-element" class="space-y-6">
+                        <div class="space-y-5">
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-success">person</span>
+                                <input 
+                                    type="text" 
+                                    id="register-username" 
+                                    placeholder="Choose a username"
+                                    class="w-full pl-14 pr-4 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-fivem-success transition-all duration-300 hover:border-gray-500"
+                                    required
+                                    minlength="3"
+                                    maxlength="20"
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-success/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-success">mail</span>
+                                <input 
+                                    type="email" 
+                                    id="register-email" 
+                                    placeholder="Your email address"
+                                    class="w-full pl-14 pr-4 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-fivem-success transition-all duration-300 hover:border-gray-500"
+                                    required
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-success/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-success">lock</span>
+                                <input 
+                                    type="password" 
+                                    id="register-password" 
+                                    placeholder="Create a password"
+                                    class="w-full pl-14 pr-14 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-fivem-success transition-all duration-300 hover:border-gray-500"
+                                    required
+                                    minlength="6"
+                                />
+                                <button type="button" id="toggle-register-password" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                    <span class="material-symbols-outlined text-xl">visibility</span>
+                                </button>
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-success/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                            <div class="relative group">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl transition-colors group-focus-within:text-fivem-success">verified_user</span>
+                                <input 
+                                    type="password" 
+                                    id="register-confirm-password" 
+                                    placeholder="Confirm your password"
+                                    class="w-full pl-14 pr-4 py-4 bg-fivem-darker/60 border border-gray-600/50 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fivem-success focus:border-fivem-success transition-all duration-300 hover:border-gray-500"
+                                    required
+                                    minlength="6"
+                                />
+                                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-fivem-success/20 to-fivem-accent/20 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+                        </div>
 
-                    <button 
-                        type="submit" 
-                        class="w-full bg-gradient-to-r from-fivem-success to-green-600 hover:from-green-600 hover:to-fivem-success text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-fivem-success focus:ring-offset-2 focus:ring-offset-gray-800"
-                    >
-                        Create Account
-                    </button>
-                </form>
+                        <div class="bg-fivem-darker/40 rounded-2xl p-6 border border-gray-600/30 backdrop-blur-sm">
+                            <h3 class="text-white font-semibold mb-4 flex items-center">
+                                <span class="material-symbols-outlined mr-3 text-fivem-warning">security</span>
+                                Account Security
+                            </h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center text-sm text-gray-300">
+                                    <div class="w-2 h-2 bg-fivem-success rounded-full mr-3 animate-pulse"></div>
+                                    Minimum 6 characters for password
+                                </div>
+                                <div class="flex items-center text-sm text-gray-300">
+                                    <div class="w-2 h-2 bg-fivem-accent rounded-full mr-3 animate-pulse" style="animation-delay: 0.2s;"></div>
+                                    Username must be unique (3-20 characters)
+                                </div>
+                                <div class="flex items-center text-sm text-gray-300">
+                                    <div class="w-2 h-2 bg-fivem-primary rounded-full mr-3 animate-pulse" style="animation-delay: 0.4s;"></div>
+                                    One account per FiveM license
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="mt-6 text-center">
-                    <p class="text-gray-400">
-                        Already have an account? 
-                        <button id="show-login" class="text-fivem-accent hover:text-blue-400 font-semibold transition-colors">
-                            Sign in
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-fivem-success to-fivem-accent hover:from-fivem-success-dark hover:to-fivem-accent-dark text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-fivem-success focus:ring-offset-2 focus:ring-offset-fivem-dark relative overflow-hidden group"
+                        >
+                            <span class="relative z-10">Create Account</span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </button>
-                    </p>
+                    </form>
+
+                    <div class="mt-8 text-center">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent flex-1"></div>
+                            <span class="px-4 text-gray-500 text-sm">Already have an account?</span>
+                            <div class="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent flex-1"></div>
+                        </div>
+                        <button id="show-login" class="text-fivem-primary hover:text-fivem-primary-dark font-semibold transition-all duration-300 hover:scale-105 relative group">
+                            <span class="relative z-10">Sign in instead</span>
+                            <div class="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-fivem-primary to-fivem-primary-dark transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Loading Overlay -->
-            <div id="loading-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-                <div class="bg-fivem-secondary/90 rounded-2xl p-8 text-center border border-gray-700/50">
-                    <div class="animate-spin w-12 h-12 border-4 border-fivem-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-                    <p class="text-white font-semibold">Processing...</p>
+            <div id="loading-overlay" class="fixed inset-0 bg-fivem-dark/80 backdrop-blur-md flex items-center justify-center z-50 hidden">
+                <div class="bg-fivem-surface/95 rounded-3xl p-8 text-center border border-gray-700/50 shadow-2xl relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-r from-fivem-primary/10 via-fivem-accent/10 to-fivem-success/10 animate-gradient-shift"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 mx-auto mb-6 relative">
+                            <div class="absolute inset-0 border-4 border-fivem-primary/30 rounded-full"></div>
+                            <div class="absolute inset-0 border-4 border-transparent border-t-fivem-primary rounded-full animate-spin"></div>
+                            <div class="absolute inset-2 border-4 border-transparent border-t-fivem-accent rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                        </div>
+                        <p class="text-white font-semibold text-lg">Processing...</p>
+                        <p class="text-gray-400 text-sm mt-2">Please wait while we verify your credentials</p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Toast Container -->
+        <div id="toast-container" class="fixed top-6 right-6 z-50 space-y-3"></div>
 
         <script src="login-app.js"></script>
     </body>

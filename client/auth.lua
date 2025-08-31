@@ -43,12 +43,21 @@ RegisterNetEvent('qb-multicharacter:client:loginResult', function(result)
         HideLoginUI()
         -- Proceed to character selection
         TriggerEvent('qb-multicharacter:client:chooseChar')
+    else
+        -- Send result to NUI for toast display
+        SendNUIMessage({
+            action = 'loginResult',
+            result = result
+        })
     end
-    -- Error handling is done in the NUI
 end)
 
 RegisterNetEvent('qb-multicharacter:client:registerResult', function(result)
-    -- Result handling is done in the NUI
+    -- Send result to NUI for toast display
+    SendNUIMessage({
+        action = 'registerResult',
+        result = result
+    })
 end)
 
 -- NUI Callbacks

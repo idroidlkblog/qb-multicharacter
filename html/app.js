@@ -143,11 +143,39 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 return translationManager.translate(key);
             },
+            handleLoginMessage: function(data) {
+                const loginFrame = document.querySelector('#login-container iframe');
+                if (loginFrame && loginFrame.contentWindow) {
+                    loginFrame.contentWindow.postMessage({
+                        action: 'loginResult',
+                        result: data
+                    }, '*');
+                }
+            },
+            handleRegisterMessage: function(data) {
+                const loginFrame = document.querySelector('#login-container iframe');
+                if (loginFrame && loginFrame.contentWindow) {
+                    loginFrame.contentWindow.postMessage({
+                        action: 'registerResult',
+                        result: data
+                    }, '*');
+                }
+            },
         },
         mounted() {
             initializeValidator();
             var loadingProgress = 0;
             var loadingDots = 0;
+            
+            // Listen for messages from login iframe
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'login') {
+                    axios.post("https://qb-multicharacter/login", event.data.data);
+                } else if (event.data.type === 'register') {
+                    axios.post("https://qb-multicharacter/register", event.data.data);
+                }
+            });
+            
             window.addEventListener("message", (event) => {
                 var data = event.data;
                 switch (data.action) {
@@ -202,6 +230,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         break;
                     case "hideLogin":
                         document.getElementById('login-container').style.display = 'none';
+                        break;
+                    case "loginResult":
+                        this.handleLoginMessage(data.result);
+                        break;
+                    case "registerResult":
+                        this.handleRegisterMessage(data.result);
                         break;
                     case "setupCharacters":
                         var newChars = [];

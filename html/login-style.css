@@ -1,8 +1,19 @@
-/* Custom styles for login system */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Modern FiveM Login Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* Custom animations */
 @keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes slideUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -13,29 +24,81 @@
     }
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    50% {
+        box-shadow: 0 0 50px rgba(99, 102, 241, 0.6);
     }
 }
 
-@keyframes pulseGlow {
+@keyframes float {
     0%, 100% {
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+        transform: translateY(-20px) rotate(1deg);
+    }
+    66% {
+        transform: translateY(-10px) rotate(-1deg);
+    }
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        background-position: 0% 50%;
     }
     50% {
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        background-position: 100% 50%;
     }
+}
+
+@keyframes bounceSubtle {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+}
+
+/* Base styles */
+* {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease-in-out infinite;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -43,26 +106,33 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(59, 130, 246, 0.5);
-    border-radius: 3px;
+    background: linear-gradient(to bottom, #6366f1, #8b5cf6);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(59, 130, 246, 0.7);
+    background: linear-gradient(to bottom, #4f46e5, #7c3aed);
 }
 
 /* Form validation states */
 .input-error {
     border-color: #ef4444 !important;
-    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3) !important;
+    animation: shake 0.5s ease-in-out;
 }
 
 .input-success {
     border-color: #10b981 !important;
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3) !important;
 }
 
-/* Button hover effects */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Button effects */
 .btn-hover-effect {
     position: relative;
     overflow: hidden;
@@ -75,44 +145,72 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
 }
 
 .btn-hover-effect:hover::before {
     left: 100%;
 }
 
-/* Toast notification styles */
+/* Enhanced toast styles */
 .toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 16px 20px;
-    border-radius: 12px;
+    position: relative;
+    padding: 16px 24px;
+    border-radius: 16px;
     color: white;
     font-weight: 500;
-    z-index: 1000;
-    transform: translateX(400px);
-    transition: transform 0.3s ease-in-out;
-    max-width: 300px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    max-width: 350px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideInRight 0.4s ease-out;
+    overflow: hidden;
 }
 
-.toast.show {
-    transform: translateX(0);
+.toast::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    animation: slideProgress 4s linear;
+}
+
+.toast.removing {
+    animation: slideOutRight 0.3s ease-in forwards;
 }
 
 .toast.success {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9));
+    border-color: rgba(16, 185, 129, 0.3);
 }
 
 .toast.error {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(220, 38, 38, 0.9));
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .toast.warning {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.9), rgba(217, 119, 6, 0.9));
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.toast.info {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(79, 70, 229, 0.9));
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+@keyframes slideProgress {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(100%);
+    }
 }
 
 /* Loading states */
@@ -125,6 +223,22 @@
     cursor: not-allowed;
 }
 
+/* Enhanced focus states */
+input:focus {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* Glassmorphism effects */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* Responsive design */
 @media (max-width: 480px) {
     .container {
@@ -133,11 +247,63 @@
     
     .form-container {
         padding: 1.5rem;
+        border-radius: 1.5rem;
     }
     
     .toast {
-        right: 10px;
-        left: 10px;
+        right: 1rem;
+        left: 1rem;
         max-width: none;
+    }
+    
+    input {
+        padding: 1rem 3.5rem 1rem 3.5rem;
+    }
+    
+    button {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 320px) {
+    .form-container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.5rem;
+    }
+    
+    .icon-container {
+        width: 4rem;
+        height: 4rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .toast {
+        border-width: 2px;
+    }
+    
+    input:focus {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
     }
 }

@@ -48,6 +48,11 @@ local function GetUserByLicense(license)
     return result[1]
 end
 
+local function GetUserByEmailOrUsername(identifier)
+    local result = MySQL.query.await('SELECT * FROM user_accounts WHERE (email = ? OR username = ?) AND is_active = TRUE', {identifier, identifier})
+    return result[1]
+end
+
 local function CreateUserAccount(username, email, passwordHash, license)
     local result = MySQL.insert.await([[
         INSERT INTO user_accounts (username, email, password_hash, license) 
@@ -81,19 +86,11 @@ RegisterNetEvent('qb-multicharacter:server:attemptLogin', function(email, passwo
         return
     end
 
-    if not IsValidEmail(email) then
-        TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
-            success = false,
-            message = 'Please enter a valid email address.'
-        })
-        return
-    end
-
-    local user = GetUserByEmail(email)
+    local user = GetUserByEmailOrUsername(email)
     if not user then
         TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
             success = false,
-            message = 'Invalid email or password.'
+            message = 'Invalid credentials. Please check your email/username and password.'
         })
         return
     end
@@ -121,7 +118,7 @@ RegisterNetEvent('qb-multicharacter:server:attemptLogin', function(email, passwo
     else
         TriggerClientEvent('qb-multicharacter:client:loginResult', src, {
             success = false,
-            message = 'Invalid email or password.'
+            message = 'Invalid credentials. Please check your email/username and password.'
         })
     end
 end)
